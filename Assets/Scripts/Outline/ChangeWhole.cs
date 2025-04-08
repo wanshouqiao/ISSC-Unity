@@ -10,6 +10,8 @@ public class ChangeWhole : MonoBehaviour
     private List<Color[]> originalColorsList = new List<Color[]>();
     private MaterialPropertyBlock propertyBlock;
 
+    public bool isListening = false;  // 是否启用监听
+
     void Start()
     {
         propertyBlock = new MaterialPropertyBlock();
@@ -30,7 +32,34 @@ public class ChangeWhole : MonoBehaviour
         //resetButton.onClick.AddListener(ResetColors);
     }
 
-    void SetAllRed()
+    private void Update()
+    {
+        if (!isListening) { return; }
+
+        if (Input.GetMouseButtonDown(0))  // 鼠标左键点击
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.transform == transform)
+                {
+                    OnClicked(); // 触发点击事件
+                }
+            }
+        }
+    }
+
+    public void OnClicked()
+    {
+        // 将
+    }
+
+    public void EnableListening(bool enable)
+    {
+        isListening = enable;
+    }
+
+    public void SetAllRed()
     {
         foreach (Renderer rend in renderers)
         {
@@ -43,7 +72,7 @@ public class ChangeWhole : MonoBehaviour
         }
     }
 
-    void ResetColors()
+    public void ResetColors()
     {
         for (int i = 0; i < renderers.Length; i++)
         {
